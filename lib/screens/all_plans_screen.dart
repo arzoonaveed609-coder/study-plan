@@ -7,18 +7,25 @@ class AllPlansScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final goals = context.watch<StudyProvider>().goals;
+    final goals =
+        context.watch<StudyProvider>().goals;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F6FA),
+      backgroundColor:
+      const Color(0xFFF5F6FA),
 
       appBar: AppBar(
         title: const Text(
           "All Plans",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Colors.black,
+          ),
         ),
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme:
+        const IconThemeData(
+          color: Colors.black,
+        ),
         elevation: 0,
       ),
 
@@ -26,63 +33,102 @@ class AllPlansScreen extends StatelessWidget {
           ? const Center(
         child: Text(
           "Abhi tak koi plan nahi bana.",
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(
+            color: Colors.grey,
+          ),
         ),
       )
           : ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding:
+        const EdgeInsets.all(16),
         itemCount: goals.length,
 
-        itemBuilder: (context, index) {
-          final goal = goals[index];
+        itemBuilder:
+            (context, index) {
+          final goal =
+          goals[index];
+
+          // Timer complete hua?
+          final bool timerCompleted =
+              goal.isFocusTimerCompleted;
 
           return Card(
-            margin: const EdgeInsets.symmetric(vertical: 6),
+            margin:
+            const EdgeInsets.symmetric(
+              vertical: 6,
+            ),
 
             child: ListTile(
               leading: Icon(
                 goal.isCompleted
                     ? Icons.check_circle
+                    : timerCompleted
+                    ? Icons.timer
                     : Icons.menu_book,
 
-                color: goal.isCompleted
+                color:
+                goal.isCompleted
                     ? Colors.green
-                    : const Color(0xFF4A6CF7),
+                    : timerCompleted
+                    ? Colors.blue
+                    : const Color(
+                  0xFF4A6CF7,
+                ),
               ),
 
               title: Text(
                 goal.subject,
 
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
+                  fontWeight:
+                  FontWeight.w600,
 
-                  decoration: goal.isCompleted
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
+                  decoration:
+                  goal.isCompleted
+                      ? TextDecoration
+                      .lineThrough
+                      : TextDecoration
+                      .none,
                 ),
               ),
 
               subtitle: Text(
                 "${goal.topic} • "
-                    "${goal.date.day}/${goal.date.month}/${goal.date.year} • "
+                    "${goal.date.day}/"
+                    "${goal.date.month}/"
+                    "${goal.date.year} • "
                     "${goal.time}",
               ),
 
               trailing: Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize:
+                MainAxisSize.min,
 
                 children: [
-                  // Checkbox
+                  // ==================================================
+                  // CHECKBOX
+                  // ==================================================
+
                   Checkbox(
-                    value: goal.isCompleted,
+                    value:
+                    goal.isCompleted,
 
                     activeColor:
-                    const Color(0xFF4A6CF7),
+                    const Color(
+                      0xFF4A6CF7,
+                    ),
 
-                    onChanged: (value) {
-                      if (value != null) {
+                    // Timer complete nahi hua
+                    // to checkbox disabled.
+                    onChanged:
+                    !timerCompleted
+                        ? null
+                        : (value) {
+                      if (value !=
+                          null) {
                         context
-                            .read<StudyProvider>()
+                            .read<
+                            StudyProvider>()
                             .toggleGoalCompletion(
                           goal.id,
                           value,
@@ -91,55 +137,84 @@ class AllPlansScreen extends StatelessWidget {
                     },
                   ),
 
-                  // Delete button
+                  // ==================================================
+                  // LOCK ICON
+                  // ==================================================
+
+                  if (!timerCompleted &&
+                      !goal.isCompleted)
+                    const Icon(
+                      Icons.lock_outline,
+                      size: 18,
+                      color: Colors.grey,
+                    ),
+
+                  // ==================================================
+                  // DELETE
+                  // ==================================================
+
                   IconButton(
-                    icon: const Icon(
-                      Icons.delete_outline,
+                    icon:
+                    const Icon(
+                      Icons
+                          .delete_outline,
                       color: Colors.red,
                     ),
 
-                    tooltip: "Delete",
+                    tooltip:
+                    "Delete",
 
-                    onPressed: () async {
+                    onPressed:
+                        () async {
                       final shouldDelete =
-                      await showDialog<bool>(
-                        context: context,
+                      await showDialog<
+                          bool>(
+                        context:
+                        context,
 
-                        builder: (context) {
+                        builder:
+                            (context) {
                           return AlertDialog(
-                            title: const Text(
+                            title:
+                            const Text(
                               "Delete Study Goal?",
                             ),
 
-                            content: Text(
+                            content:
+                            Text(
                               'Do you want to delete "${goal.subject}"?',
                             ),
 
                             actions: [
                               TextButton(
-                                onPressed: () {
+                                onPressed:
+                                    () {
                                   Navigator.pop(
                                     context,
                                     false,
                                   );
                                 },
-
                                 child:
-                                const Text("Cancel"),
+                                const Text(
+                                  "Cancel",
+                                ),
                               ),
 
                               TextButton(
-                                onPressed: () {
+                                onPressed:
+                                    () {
                                   Navigator.pop(
                                     context,
                                     true,
                                   );
                                 },
-
-                                child: const Text(
+                                child:
+                                const Text(
                                   "Delete",
-                                  style: TextStyle(
-                                    color: Colors.red,
+                                  style:
+                                  TextStyle(
+                                    color:
+                                    Colors.red,
                                   ),
                                 ),
                               ),
@@ -148,10 +223,14 @@ class AllPlansScreen extends StatelessWidget {
                         },
                       );
 
-                      if (shouldDelete == true) {
+                      if (shouldDelete ==
+                          true) {
                         await context
-                            .read<StudyProvider>()
-                            .deleteGoal(goal.id);
+                            .read<
+                            StudyProvider>()
+                            .deleteGoal(
+                          goal.id,
+                        );
                       }
                     },
                   ),

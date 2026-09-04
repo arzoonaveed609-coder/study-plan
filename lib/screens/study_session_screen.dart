@@ -1,40 +1,118 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/study_provider.dart';
 import 'circular_duration_picker.dart';
-//import '../widgets/circular_duration_picker.dart';
 
-class StudySessionScreen extends StatelessWidget {
+class StudySessionScreen extends StatefulWidget {
   const StudySessionScreen({super.key});
 
   @override
+  State<StudySessionScreen> createState() =>
+      _StudySessionScreenState();
+}
+
+class _StudySessionScreenState
+    extends State<StudySessionScreen> {
+
+  bool _alreadyNavigated = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider =
+      context.read<StudyProvider>();
+
+      provider.addListener(_checkTimerCompletion);
+    });
+  }
+
+  void _checkTimerCompletion() {
+    if (!mounted) return;
+
+    final provider =
+    context.read<StudyProvider>();
+
+    // Sirf genuine timer completion par
+    // previous screen par wapas jao.
+    if (provider.focusSessionJustCompleted &&
+        !_alreadyNavigated) {
+
+      _alreadyNavigated = true;
+
+      // Current Study Session screen close karo
+      // aur previous screen par wapas jao.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    try {
+      context
+          .read<StudyProvider>()
+          .removeListener(_checkTimerCompletion);
+    } catch (_) {}
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final provider = context.watch<StudyProvider>();
+    final provider =
+    context.watch<StudyProvider>();
+
     final goal = provider.activeGoal;
 
-    final bool hasTimeSet = provider.totalMinutesForSession > 0;
+    final bool hasTimeSet =
+        provider.totalMinutesForSession > 0;
 
-    final int displayMinutesTotal = hasTimeSet
+    final int displayMinutesTotal =
+    hasTimeSet
         ? (provider.isRunning
-        ? (provider.remainingSeconds / 60).ceil()
+        ? (provider.remainingSeconds / 60)
+        .ceil()
         : provider.totalMinutesForSession)
         : 0;
 
-    final String centerLabel = hasTimeSet ? provider.formattedTime : "Set time";
+    final String centerLabel =
+    hasTimeSet
+        ? provider.formattedTime
+        : "Set time";
 
     return Scaffold(
       backgroundColor: Colors.white,
+
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+
+        iconTheme:
+        const IconThemeData(
+          color: Colors.black,
+        ),
+
         title: const Text(
           'Study Session',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
+
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding:
+        const EdgeInsets.symmetric(
+          horizontal: 24,
+        ),
+
         child: Column(
           children: [
             const SizedBox(height: 24),
@@ -42,26 +120,41 @@ class StudySessionScreen extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
+
               decoration: BoxDecoration(
                 color: Colors.blue,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius:
+                BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.menu_book, color: Colors.white, size: 24),
+
+              child: const Icon(
+                Icons.menu_book,
+                color: Colors.white,
+                size: 24,
+              ),
             ),
+
             const SizedBox(height: 12),
 
             Text(
               goal?.subject ?? 'General Study',
+
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
+
             const SizedBox(height: 2),
+
             Text(
               goal?.topic ?? 'Focus Session',
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
             ),
 
             const SizedBox(height: 12),
@@ -70,34 +163,49 @@ class StudySessionScreen extends StatelessWidget {
               const Text(
                 "Drag the hour hand and minute hand to set your time",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
               ),
 
             const SizedBox(height: 20),
 
-// ---------------- Clock Dial with two hands ----------------
             SizedBox(
               width: 280,
               height: 280,
+
               child: CircularDurationPicker(
-                totalMinutes: hasTimeSet
+                totalMinutes:
+                hasTimeSet
                     ? (provider.isRunning
                     ? displayMinutesTotal
-                    : provider.totalMinutesForSession)
+                    : provider
+                    .totalMinutesForSession)
                     : 0,
-                enabled: !provider.isRunning,
-                centerLabel: centerLabel,
-                onMinutesSelected: (minutes) {
-                  context.read<StudyProvider>().setCustomDuration(minutes);
+
+                enabled:
+                !provider.isRunning,
+
+                centerLabel:
+                centerLabel,
+
+                onMinutesSelected:
+                    (minutes) {
+                  context
+                      .read<StudyProvider>()
+                      .setCustomDuration(
+                    minutes,
+                  );
                 },
               ),
             ),
 
             const SizedBox(height: 20),
 
-// ---------------- Time display (clock ke NEECHE, clean) ----------------
             Text(
               centerLabel,
+
               style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -107,9 +215,12 @@ class StudySessionScreen extends StatelessWidget {
 
             const SizedBox(height: 4),
 
-            if (!provider.isRunning && hasTimeSet)
+            if (!provider.isRunning &&
+                hasTimeSet)
               Text(
-                "${provider.totalMinutesForSession ~/ 60}h ${provider.totalMinutesForSession % 60}m selected",
+                "${provider.totalMinutesForSession ~/ 60}h "
+                    "${provider.totalMinutesForSession % 60}m selected",
+
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -119,34 +230,55 @@ class StudySessionScreen extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            // ---------------- Start / Pause Button ----------------
             SizedBox(
               width: double.infinity,
               height: 48,
+
               child: ElevatedButton.icon(
-                onPressed: !hasTimeSet
+                onPressed:
+                !hasTimeSet ||
+                    goal == null
                     ? null
                     : () {
-                  final p = context.read<StudyProvider>();
+                  final p =
+                  context.read<
+                      StudyProvider>();
+
                   if (p.isRunning) {
                     p.pauseFocusSession();
                   } else {
                     p.startFocusSession();
                   }
                 },
+
                 icon: Icon(
-                  provider.isRunning ? Icons.pause : Icons.play_arrow,
+                  provider.isRunning
+                      ? Icons.pause
+                      : Icons.play_arrow,
                   size: 20,
                 ),
+
                 label: Text(
-                  provider.isRunning ? 'Pause' : 'Start Focus Session',
+                  provider.isRunning
+                      ? 'Pause'
+                      : 'Start Focus Session',
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  disabledBackgroundColor: Colors.grey.shade300,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+
+                style:
+                ElevatedButton.styleFrom(
+                  backgroundColor:
+                  Colors.blue,
+
+                  foregroundColor:
+                  Colors.white,
+
+                  disabledBackgroundColor:
+                  Colors.grey.shade300,
+
+                  shape:
+                  RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.circular(10),
                   ),
                 ),
               ),
@@ -155,14 +287,22 @@ class StudySessionScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             TextButton(
-              onPressed: hasTimeSet
+              onPressed:
+              hasTimeSet &&
+                  !provider.isRunning
                   ? () {
-                context.read<StudyProvider>().resetSession();
+                context
+                    .read<
+                    StudyProvider>()
+                    .resetSession();
               }
                   : null,
+
               child: const Text(
                 'Reset Session',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
               ),
             ),
 
