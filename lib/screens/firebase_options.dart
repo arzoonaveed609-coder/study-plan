@@ -7,13 +7,13 @@ import 'package:flutter/foundation.dart'
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
 /// Example:
-/// dart
+/// ```dart
 /// import 'firebase_options.dart';
 /// // ...
 /// await Firebase.initializeApp(
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
-///
+/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCLqLRZK_JWq6gPm-fMg9sOdAOZku7p-Zk',
-    appId: '1:345125267310:web:29b6c078f614b78f40c37f',
-    messagingSenderId: '345125267310',
-    projectId: 'study-planner-4bb9c',
-    authDomain: 'study-planner-4bb9c.firebaseapp.com',
-    storageBucket: 'study-planner-4bb9c.firebasestorage.app',
-    measurementId: 'G-VNT60Q2PDR',
+    apiKey: 'AIzaSyBTD7-JvigUScMs7UUj9LdBnLSXmMtrKfs',
+    appId: '1:207289243749:web:6359690bfe7d22dff20e8c',
+    messagingSenderId: '207289243749',
+    projectId: 'school-parent-app-c46ee',
+    authDomain: 'school-parent-app-c46ee.firebaseapp.com',
+    storageBucket: 'school-parent-app-c46ee.firebasestorage.app',
+    measurementId: 'G-JV8PCQ3D5P',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCzlERLcMF6JKaSgwh6WC19Ix4H9XFnTms',
-    appId: '1:345125267310:android:e78c85dd0fd2c77240c37f',
-    messagingSenderId: '345125267310',
-    projectId: 'study-planner-4bb9c',
-    storageBucket: 'study-planner-4bb9c.firebasestorage.app',
+    apiKey: 'AIzaSyAM0xuJldMjXR-lziXpPdmdyx3sbvS4KQM',
+    appId: '1:207289243749:android:72cacb6bd7d6d986f20e8c',
+    messagingSenderId: '207289243749',
+    projectId: 'school-parent-app-c46ee',
+    storageBucket: 'school-parent-app-c46ee.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBkMwpVSrEiKfy1oQiB6TqBxmfvlvKQ1aY',
-    appId: '1:345125267310:ios:34d710569fd009d040c37f',
-    messagingSenderId: '345125267310',
-    projectId: 'study-planner-4bb9c',
-    storageBucket: 'study-planner-4bb9c.firebasestorage.app',
-    iosBundleId: 'com.example.untitled1',
+    apiKey: 'AIzaSyATKVc2tjetVP3570E8ma0Rw82qykPCTSs',
+    appId: '1:207289243749:ios:e5fd383aab01a75cf20e8c',
+    messagingSenderId: '207289243749',
+    projectId: 'school-parent-app-c46ee',
+    storageBucket: 'school-parent-app-c46ee.firebasestorage.app',
+    iosBundleId: 'com.example.untitled2',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBkMwpVSrEiKfy1oQiB6TqBxmfvlvKQ1aY',
-    appId: '1:345125267310:ios:34d710569fd009d040c37f',
-    messagingSenderId: '345125267310',
-    projectId: 'study-planner-4bb9c',
-    storageBucket: 'study-planner-4bb9c.firebasestorage.app',
-    iosBundleId: 'com.example.untitled1',
+    apiKey: 'AIzaSyATKVc2tjetVP3570E8ma0Rw82qykPCTSs',
+    appId: '1:207289243749:ios:e5fd383aab01a75cf20e8c',
+    messagingSenderId: '207289243749',
+    projectId: 'school-parent-app-c46ee',
+    storageBucket: 'school-parent-app-c46ee.firebasestorage.app',
+    iosBundleId: 'com.example.untitled2',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCLqLRZK_JWq6gPm-fMg9sOdAOZku7p-Zk',
-    appId: '1:345125267310:web:63d27cb7f5c4c00d40c37f',
-    messagingSenderId: '345125267310',
-    projectId: 'study-planner-4bb9c',
-    authDomain: 'study-planner-4bb9c.firebaseapp.com',
-    storageBucket: 'study-planner-4bb9c.firebasestorage.app',
-    measurementId: 'G-H9NYXWZPVF',
+    apiKey: 'AIzaSyBTD7-JvigUScMs7UUj9LdBnLSXmMtrKfs',
+    appId: '1:207289243749:web:45c010e89f29d41bf20e8c',
+    messagingSenderId: '207289243749',
+    projectId: 'school-parent-app-c46ee',
+    authDomain: 'school-parent-app-c46ee.firebaseapp.com',
+    storageBucket: 'school-parent-app-c46ee.firebasestorage.app',
+    measurementId: 'G-GWN2Z59DWS',
   );
-}
+}// TODO Implement this library.
