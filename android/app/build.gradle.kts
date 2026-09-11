@@ -2,10 +2,17 @@ import java.util.Properties
 import java.io.FileInputStream
 
 plugins {
-    id("com.android.application")
+
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services")
-}
+
+
+
+        id("com.android.application")
+
+        // Add the Google services Gradle plugin
+        id("com.google.gms.google-services")
+
+    }
 
 // Read key.properties
 val keystoreProperties = Properties()
@@ -68,7 +75,10 @@ flutter {
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
 
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
 
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+
+// TODO: Add the dependencies for Firebase products you want to use
+// When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
 }
